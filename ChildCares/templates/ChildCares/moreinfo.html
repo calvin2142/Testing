@@ -1,0 +1,163 @@
+{% extends "common/header.html" %} 
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="container">
+                    <h2 class="card-title">{{ content.0.centre_code }}</h2>
+                </div>
+                <p class="card-text">
+                    <div class="container">
+                        <h3>{{ content.0.centre_name }}</h3> </br>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Information</h4>
+                        <div class="row">
+                            <div class="col-md">
+                                <b>Goverment Subsidy</b></br>
+                                {{ content.0.government_subsidy }} </br>
+                                <b>Food Offered</b></br>
+                                {{ content.0.food_offered }} </br>
+                                <b>Second Language Offered</b> </br>
+                                {{ content.0.get_second_languages_offered_display }} </br>
+                                <b>Spark Certified</b></br>
+                                {{ content.0.spark_certified }} </br>
+                                <b>Scheme Type</b> </br>
+                                {{ content.0.scheme_type }} </br>
+                                <b>ICCP</b></br>
+                                {{ content.0.iccp }} </br>
+                                <b>GST Registration</b></br>
+                                {{ content.0.gst_regisration }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Fees</h4>
+                        <div class="row">
+                        {% for c in content.0.prices.all %}
+                            <div class="col-sm">
+                                <b>{{ c.citizen }}</b></br>
+                                ${{ c.price }}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Vacancy</h4>
+                        <div class="row">
+                        {% for c in content.0.vacancies.all %}
+                            <div class="col-sm">
+                                <b>{{ c.vacancy_type }}</b></br>
+                                {{ c.vacancy }}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Timings</h4>
+                        <div class="row">
+                        {% for c in content.0.timings.all %}
+                            <div class="col-md-3">
+                                <b>{{ c.day }}</b> </br>
+                                {{ c.timing }}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Contact Info</h4>
+                        <div class="row">
+                            <div class="col">
+                                <b>Website:</b> {{ content.0.centre_website }} </br>
+                                <b>Tel No:</b> {{ content.0.centre_contact_no }} </br>
+                                <b>Email:</b> {{ content.0.centre_email_address }} </br>
+                                <b>Address:</b> <address id="address">{{ content.0.centre_address }}</br></address>
+                                <b>Postal Code:</b> <postalcode id="postal_code">{{ content.0.centre_postal_code }}</br></postalcode>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Google Map</h4>
+                        <div class="row">
+                            <div id="map" style="width:1100px; height: 300px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mb-4">
+                        <h4>Reviews</h4>
+                        {% if success %} 
+                            <div class="alert alert-success" role="alert">
+                                {{ success }}
+                            </div>
+                        {% endif %}
+                        {% if error %}
+                        <div class="alert alert-danger mt-2" role="alert">
+                            {{ error }} 
+                        </div>
+                        {% endif %}
+                        <form action="{{ request.get_full_path }}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control float-left col-md-4 mr-4" name="reviewer" placeholder="Enter your name here.." aria-label="name" aria-describedby="basic-addon1">
+                                    <div class="star-rating"> 
+                                        <span class="fa fa-star checked" data-rating="1"></span>
+                                        <span class="fa fa-star checked" data-rating="2"></span>
+                                        <span class="fa fa-star checked" data-rating="3"></span>
+                                        <span class="fa fa-star" data-rating="4"></span>
+                                        <span class="fa fa-star" data-rating="5"></span>
+                                        <input type="hidden" name="star" class="rating-value" value="3">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <textarea class="form-control animated" cols="50" id="new-review" name="review" placeholder="Enter your review here..." rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="hidden" name="childcare" value="{{ content.0.centre_code }}"
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        {% for c in content.0.reviews.all %}
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ c.reviewer }}
+                                    <span class="ml-4">
+                                    {% for c in "x"|ljust:c.star %}
+                                        <span class="fa fa-star checked"></span>
+                                    {% endfor %}
+                                    </span>
+                                </h5>
+                                <p>{{ c.review }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZYP8lJtnTmatEBazCSE3Tf10KmfnvcBw"></script>
+    {% load staticfiles %}
+    <script src="{% static 'ChildCares/js/gmap.js' %}"></script>
+    <script src="{% static 'ChildCares/js/rating.js' %}"></script>
+    <style>
+        .star-rating {
+            line-height:32px;
+            font-size:1.25em;
+            cursor: pointer;
+            }
+    </style>
+    
+{% endblock %}

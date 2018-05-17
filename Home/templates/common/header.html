@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Villians ChildCare App</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load staticfiles  %}
+    <link rel='stylesheet' href="{% static 'common/css/bootstrap.min.css' %}" type='text/css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'common/js/bootstrap.bundle.js' %}"></script>
+
+    <Title>ChildCareApp</Title>
+</head>
+
+<body class="body" style="background-color:#f6f6f6">
+    <nav class="navbar navbar-expand-md navbar-dark static-top bg-dark">
+        <a class="navbar-brand" href="/">Villians</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if active_page == 'home' %} active {% endif %}">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item {% if active_page == 'about' %} active {% endif %}">
+                <a class="nav-link" href="/about">About Us</a>
+            </li>
+            <li class="nav-item {% if active_page == 'childcares' %} active {% endif %}">
+                <a class="nav-link" href="/childcares">Child Care List</a>
+            </li>
+            <li class="nav-item {% if active_page == 'contact' %} active {% endif %}">
+                <a class="nav-link" href="/contact">Contact Us</a>
+            </li>
+            <li class="nav-item {% if active_page == 'help' %} active {% endif %}">
+                    <a class="nav-link" href="/help">Help</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main role="main">
+        {% block content %} {% endblock %}
+    </main>
+
+    <hr>
+
+    <footer class="container">
+        <div class="row">
+            <div class="col">
+                <i>NTU CZ2002 2017/18 Semester 2<br>Software Engineering Project<br><b>Team Villians</b></i>
+            </div>
+            <div class="col text-right">
+                Join us on telegram!
+            </div>
+        </div>
+    </footer>
+</body>
+
+<style>
+    .checked {
+    color: orange;
+}
+</style>
+
+</html>
